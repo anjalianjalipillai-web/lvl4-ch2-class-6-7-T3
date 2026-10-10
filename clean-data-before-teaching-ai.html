@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to Clean Data Before Teaching AI | Young IT Germany</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(165deg,#ff7e5f 0%,#feb47b 28%,#e65c8a 62%,#6a3fa0 100%) fixed;font-family:Arial,Helvetica,sans-serif;font-size:20px;color:#2b1b3d}
+.logo{position:fixed;top:10px;left:12px;font-size:14px;font-weight:bold;background:#fff;border-radius:20px;padding:5px 12px;box-shadow:0 2px 6px #0004;z-index:5}
+.logo b{color:#6a3fa0}.logo i{color:#e8590c;font-style:normal}.logo u{color:#d6336c;text-decoration:none}
+main{max-width:900px;margin:0 auto;padding:62px 14px 40px}
+.ban{background:#fffffff0;border-radius:18px;padding:10px 18px;margin:10px 0;color:#4a1f6e;box-shadow:0 4px 10px #0003}
+h1{font-size:38px;text-align:center;margin:0}h2{font-size:28px;margin:0}
+.sub{text-align:center;font-size:21px;margin-top:6px;color:#6a3fa0}
+.card{background:#fff;border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 6px 16px #0003;line-height:1.5}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:14px}
+.mc{background:#fff;border:5px solid #fff;border-radius:22px;padding:14px;text-align:center;cursor:pointer;font-family:inherit;font-size:20px;color:#2b1b3d;box-shadow:0 6px 14px #0003}
+.mc:hover{border-color:#ffd23f;transform:translateY(-3px)}.mc .e{font-size:50px;display:block}.mc.v{border-color:#2fb98a}
+.mc small{display:block;color:#6a3fa0;font-weight:bold;margin-top:4px}
+.b{background:#6a3fa0;color:#fff;border:0;border-radius:14px;padding:12px 20px;font-size:20px;font-family:inherit;cursor:pointer;margin:6px 4px}
+.b.o{background:#d9480f}.b.k{background:#c2255c}.b.w{background:#fff;color:#6a3fa0;border:3px solid #6a3fa0}.b:disabled{opacity:.4;cursor:default}
+input[type=text],input[type=number]{font-size:20px;font-family:inherit;padding:10px;border:3px solid #cdb7ee;border-radius:12px;width:100%;max-width:360px}
+input.cd{font-family:Consolas,monospace;max-width:100%;background:#2a1445;color:#ffe9a8;border-color:#6a3fa0}
+.pill{display:inline-block;background:#ffd23f;color:#2b1b3d;border-radius:20px;padding:4px 14px;font-weight:bold;font-size:16px}
+.badge{display:inline-block;font-size:13px;font-weight:bold;border-radius:12px;padding:3px 10px;color:#fff;background:#6a3fa0;margin:2px 4px 2px 0}.badge.o{background:#d9480f}
+.say{display:flex;gap:12px;align-items:center;background:#fff1e6;border-left:8px solid #d9480f;border-radius:16px;padding:12px;margin:10px 0}.say .c{font-size:54px}
+.tips{background:#f4ecff;border-left:8px solid #6a3fa0;border-radius:12px;padding:8px 16px;margin-top:14px;font-size:18px}.tips summary{font-weight:bold;cursor:pointer;font-size:20px}
+code{background:#2a1445;color:#ffe9a8;border-radius:8px;padding:2px 8px;font-family:Consolas,monospace;font-size:18px}
+pre.code{background:#2a1445;color:#ffe9a8;border-radius:12px;padding:12px;overflow-x:auto;font-size:17px;font-family:Consolas,monospace;margin:8px 0}
+table.t{border-collapse:collapse;width:100%;font-size:19px;margin:10px 0}
+.t th{background:#6a3fa0;color:#fff;padding:9px;text-align:left}.t td{padding:8px 9px;border-bottom:2px solid #eadcfb}
+.t.c td{cursor:pointer}.t.c td:hover{background:#fff1b8}
+.t .bad{background:#ffc9d6!important;color:#8a0f3a;font-weight:bold}.t .nan{color:#c2255c;font-style:italic}
+.wrap{overflow-x:auto}
+.nm{background:#fff;border:3px solid #6a3fa0;color:#6a3fa0;border-radius:30px;padding:8px 18px;font-size:19px;font-weight:bold;cursor:pointer;margin:4px;font-family:inherit}.nm.sel{background:#6a3fa0;color:#fff}
+.row{margin:14px 0;padding-bottom:10px;border-bottom:2px dashed #e0d0f5}
+.ok{color:#0b7a4f;font-weight:bold}.no{color:#c2255c;font-weight:bold}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}.opt.right{background:#0b7a4f}.opt.wrong{background:#c2255c}
+.nav{display:flex;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
+.bub{border-radius:16px;padding:10px 14px;margin:8px 0}.u{background:#ece3fb}.ai{background:#e3f7ee}
+details.q{background:#faf5ff;border:2px solid #e0d0f5;border-radius:12px;padding:10px 14px;margin:8px 0}details.q summary{font-weight:bold;cursor:pointer}
+.hero{text-align:center;padding:24px 10px}.hero .ci{display:inline-block;border-radius:22px;overflow:hidden;box-shadow:0 8px 20px #0005;max-width:100%}
+.bar{height:26px;border-radius:8px;color:#fff;font-weight:bold;padding-left:8px;margin:4px 0;white-space:nowrap;font-size:16px;line-height:26px}
+.steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.steps span{background:#ffe9a8;border-radius:30px;padding:8px 16px;font-weight:bold}
+.tool{display:inline-block;margin:4px}
+</style></head><body>
+<div class="logo"><b>Young</b> <i>IT</i> <u>Germany</u></div>
+<main id="app"></main>
+<script>
+const D=[{n:'Anu',a:12,f:'Mango',m:50},{n:'Ben',a:13,f:'mango',m:60},{n:'Chitra',a:null,f:'Apple',m:40},{n:'Ben',a:13,f:'mango',m:60,d:1},{n:'Dev',a:12,f:'Aple',m:55},{n:'Esha',a:130,f:'Apple',m:45},{n:'Gita',a:12,f:'Banana',m:50}];
+const OPS=[['👯','Remove the repeated row',c=>c.filter(r=>!r.d)],['🕳️','Fill the empty age with 12',c=>c.map(r=>r.a===null?{...r,a:12}:r)],['🔠','Fix capital letters (mango → Mango)',c=>c.map(r=>r.f==='mango'?{...r,f:'Mango'}:r)],['✏️','Fix the typo (Aple → Apple)',c=>c.map(r=>r.f==='Aple'?{...r,f:'Apple'}:r)],['🚫','Fix the impossible age 130 → 13',c=>c.map(r=>r.a===130?{...r,a:13}:r)]];
+const CLEAN=OPS.reduce((c,o)=>o[2](c),D);
+const ST=[['📖','Hook & Story',5],['💡','Simple Concept',10],['🤖','Live AI Demo',10],['🧼','Student Activity',15],['💻','Build & Code',20],['🏆','Clean-Up Challenge',15],['💬','Discussion',5],['📝','Quiz & Take-home Mission',10]];
+const MX=[0,0,0,10,6,6,0,5];
+let me={name:'',cls:''},S={},V={};
+const $=id=>document.getElementById(id),app=$('app');
+const sc=i=>Object.values(S[i]||{}).reduce((x,y)=>x+y,0);
+const setS=(i,k,v)=>{S[i]=S[i]||{};S[i][k]=Math.max(S[i][k]||0,v)};
+const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const say=(c,t,id)=>`<div class="say"><div class="c">${c}</div><div ${id?`id="${id}"`:''}>${t}</div></div>`;
+const tip=l=>`<details class="tips" open><summary>💡 Tips to help you</summary><ul>${l.map(x=>`<li>${x}</li>`).join('')}</ul></details>`;
+const SUN=`<svg viewBox="0 0 300 160" width="420" style="max-width:100%;display:block"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a3fa0"/><stop offset=".55" stop-color="#e65c8a"/><stop offset="1" stop-color="#ffb347"/></linearGradient></defs><rect width="300" height="160" fill="url(#sk)"/><circle cx="150" cy="108" r="44" fill="#ffd23f"/><path d="M0 122Q60 92 120 120T300 112V160H0Z" fill="#4a1f6e"/><path d="M0 140Q80 118 160 140T300 134V160H0Z" fill="#2a1445"/><line x1="150" y1="64" x2="150" y2="74" stroke="#fff" stroke-width="3"/><circle cx="150" cy="62" r="4" fill="#ff6b6b"/><rect x="134" y="74" width="32" height="26" rx="6" fill="#fff"/><circle cx="143" cy="86" r="4" fill="#6a3fa0"/><circle cx="157" cy="86" r="4" fill="#6a3fa0"/><rect x="138" y="102" width="24" height="22" rx="5" fill="#fff"/><rect x="126" y="104" width="10" height="5" rx="2" fill="#fff"/><rect x="164" y="104" width="10" height="5" rx="2" fill="#fff"/><path d="M40 40q6-8 12 0M70 28q6-8 12 0M240 46q6-8 12 0" stroke="#fff" stroke-width="2" fill="none"/></svg>`;
+const tb=(rows,o={})=>{const C=[['n','Name'],['a','Age'],['f','Favourite Fruit'],['m','Pocket Money']],h=o.hl||[];
+ return `<div class="wrap"><table class="t ${o.click?'c':''}"><tr>${C.map(c=>`<th>${c[1]}</th>`).join('')}</tr>${rows.map((r,i)=>`<tr>${C.map(c=>{const v=r[c[0]],bad=h.includes(i+':'+c[0])||h.includes(i+':*');return `<td class="${bad?'bad':''} ${v===null?'nan':''}" ${o.click?`onclick="det(${i},'${c[0]}')"`:''}>${v===null?'NaN':v}</td>`}).join('')}</tr>`).join('')}</table></div>`};
+const st=rows=>`<div class="wrap"><table class="t"><tr><th></th><th>Name</th><th>Age</th><th>Fruit</th><th>Money</th></tr>${rows.map(r=>`<tr><td>${D.indexOf(r)}</td><td>${r.n}</td><td>${r.a===null?'NaN':r.a}</td><td>${r.f}</td><td>${r.m}</td></tr>`).join('')}</table></div>`;
+function page(i,h){V[i]=1;app.innerHTML=`<span class="pill">⏱ ${ST[i][2]} min</span><div class="ban"><h2>${ST[i][0]} Stage ${i+1}: ${ST[i][1]}</h2></div>${h}<div class="nav"><button class="b w" onclick="home()">⬅ Menu</button>${i<7?`<button class="b" onclick="go(${i+1})">Next Stage ➡</button>`:`<button class="b o" onclick="results()">See My Results 🏆</button>`}</div>`;window.scrollTo(0,0)}
+const go=i=>[s1,s2,s3,s4,s5,s6,s7,s8][i]();
+
+function splash(){app.innerHTML=`<div class="hero"><div class="ci">${SUN}</div><div class="ban" style="margin-top:20px"><h1>How to Clean Data Before Teaching AI</h1><div class="sub">A Sunset Data Cleaning Adventure</div></div><button class="b o" onclick="reg()">Begin 🚀</button></div>`}
+function reg(){app.innerHTML=`<div class="card" style="text-align:center">${say('🦊','Hello, Data Cleaner! I am Ruby the Fox. Tell me your name and class to begin.')}<p><input type="text" id="nm" placeholder="Your name" maxlength="40"></p><p><input type="text" id="cl" placeholder="Your class (e.g. Class 6)" maxlength="20"></p><p id="er" class="no"></p><button class="b" onclick="enter()">Enter Activities 🎮</button></div>`}
+function enter(){const n=$('nm').value.trim(),c=$('cl').value.trim();if(!n||!c){$('er').textContent='Please type your name and class first 🙂';return}me={name:n,cls:c};home()}
+function home(){app.innerHTML=`<div class="ban"><h1 style="font-size:32px">Welcome, ${esc(me.name)}! 🦊</h1><div class="sub">Pick any stage. Follow the order or explore freely!</div></div><div class="menu">${ST.map((s,i)=>`<button class="mc ${V[i]?'v':''}" onclick="go(${i})"><span class="e">${s[0]}</span><b>${i+1}. ${s[1]}</b><small>⏱ ${s[2]} min ${V[i]?'✅':''}</small></button>`).join('')}<button class="mc" onclick="results()" style="border-color:#ffd23f"><span class="e">🏅</span><b>My Results</b><small>See &amp; download</small></button></div>`}
+
+function s1(){page(0,`<div class="card">${say('🤖','Hi! I am <b>Bolt</b>, a learning robot. My teacher gave me our school fruit survey to learn from. But my answers are SILLY! I said the average age of our club is <b>32</b> years!','m1')}
+<div id="hk">${tb(D)}</div><p id="hp">🤔 Can you see what is strange about this survey?</p>
+<button class="b o" onclick="hook()">🔎 Show me the clues!</button>
+${tip(['Look at every column slowly.','Ask: Is anything empty? Is anything repeated? Does anything look wrong?','Bolt learns from this table, so mistakes in it become mistakes in Bolt!'])}</div>`)}
+function hook(){$('hk').innerHTML=tb(D,{hl:['1:f','2:a','3:*','4:f','5:a']});$('hp').innerHTML='🚨 <b>5 problems:</b> a repeated row (Ben), an empty age (Chitra), <b>mango</b> vs <b>Mango</b>, the typo <b>Aple</b>, and an age of <b>130</b>! Dirty data makes a confused AI.';$('m1').textContent='Now I see! Messy data = messy robot brain. Let us clean it!'}
+
+function s2(){page(1,`<div class="card"><div class="say"><div class="c">🗑️</div><div><b>Garbage in, garbage out!</b> If we teach an AI with messy data, it learns messy things. So we <b>clean data first</b>.</div></div>
+<p><b>4 kinds of dirty data</b> (tap each one):</p>
+${[['🕳️','Missing values','Empty boxes. Pandas shows them as <b>NaN</b> (Not a Number).',"df.isna().sum() finds them.<br>df.dropna() removes those rows.<br>df['Age'].fillna(12) fills them."],['👯','Duplicates','The same row appears two times.','df.drop_duplicates() keeps only one copy.'],['🔠','Typos &amp; different spelling','mango and Mango look different to a computer. Aple is a typo.',"df['Fruit'].str.title() fixes capital letters.<br>df['Fruit'].replace('Aple','Apple') fixes a typo."],['🚫','Impossible values','An age of 130 for a school kid!',"df[df['Age']&lt;20] keeps only sensible ages."]].map(c=>`<details class="q"><summary>${c[0]} ${c[1]}</summary><p>${c[2]}</p><p><b>Fix with:</b><br><code style="display:inline-block;line-height:1.8">${c[3]}</code></p></details>`).join('')}
+<p><b>The cleaning recipe</b></p><div class="steps"><span>1 👀 Look</span><span>2 🔎 Find</span><span>3 🛠️ Fix</span><span>4 ✅ Check</span></div>
+${tip(['Missing = empty. Duplicate = twice. Typo = spelling slip. Impossible = cannot be true.','Always <b>look</b> at the data before you change anything.','After fixing, <b>check</b> the table again!'])}</div>`)}
+
+const avg=r=>{const a=r.filter(x=>x.a!==null).map(x=>x.a);return (a.reduce((x,y)=>x+y,0)/a.length).toFixed(1)};
+const cnt=r=>{const o={};r.forEach(x=>o[x.f]=(o[x.f]||0)+1);return o};
+function s3(){page(2,`<div class="card"><span class="badge">🇪🇺 AI Literacy</span><span class="badge o">Data Quality</span>
+${say('🤖','Teacher, choose what to feed me! I will count the favourite fruit and work out the average age.')}
+<button class="b k" onclick="demo(0)">🍂 Feed Bolt MESSY data</button><button class="b" onclick="demo(1)">✨ Feed Bolt CLEAN data</button><div id="dm"></div>
+${tip(['Watch the bars: does Bolt count <b>mango</b> and <b>Mango</b> together?','Is an average age of 32 sensible for kids?','Always check what AI tells you. Human oversight matters!'])}</div>`)}
+function demo(c){const r=c?CLEAN:D,k=cnt(r),top=Object.entries(k).sort((a,b)=>b[1]-a[1]),cols=['#d9480f','#6a3fa0','#c2255c','#0b7a6e','#e8890c'];
+ $('dm').innerHTML=`<h3>${c?'✨ Clean data':'🍂 Messy data'}</h3>${tb(r)}<p><b>🍎 Fruit votes (what Bolt counts):</b></p>${Object.entries(k).map((e,i)=>`<div class="bar" style="width:${e[1]*30+25}%;background:${cols[i%5]}">${e[0]}: ${e[1]}</div>`).join('')}<p><b>📊 Average age:</b> ${avg(r)}</p>
+ ${c?say('🤖',`Now it makes sense! <b>${top[0][0]}</b> is the favourite with ${top[0][1]} votes and the average age is ${avg(r)}. Thank you!`):say('😵','Hmm... is the favourite <b>mango</b> or <b>Apple</b>? I count Mango, mango and Aple as different fruits! And the average age is 32?! I am confused!')}`}
+
+const IS=[[1,'f','Different capital letters'],[2,'a','Missing value (NaN)'],[3,'*','Repeated row'],[4,'f','Typo (Aple)'],[5,'a','Impossible value (130)']];let fd={},L=[],used={};
+function s4(){fd={};used={};L=D.map(r=>({...r}));page(3,`<div class="card"><h3>🔎 Part A: Dirty Data Detective</h3><p>Tap the cells that look <b>wrong</b>. Find all <b>5</b> problems!</p><div id="dt"></div><p id="dm4"></p>
+<h3>🧽 Part B: Cleaning Lab</h3><p>Tap the tools to clean the table. Use them in any order.</p><div>${OPS.map((o,k)=>`<button class="b tool" id="tl${k}" onclick="tool(${k})">${o[0]} ${o[1]}</button>`).join('')}</div><div id="lab"></div>
+${tip(['Part A: Look for empty (NaN), repeated, different spelling, and impossible numbers.','Tapping the <b>repeated row</b>? Tap any box in it.','Part B: Every tool fixes one problem. Use all 5 to get a sparkling clean table!'])}</div>`);dd();lb()}
+function dd(){const h=Object.keys(fd).map(i=>IS[i][0]+':'+IS[i][1]);$('dt').innerHTML=tb(D,{click:1,hl:h})+`<p><b>Found ${Object.keys(fd).length} of 5</b> ${Object.keys(fd).map(i=>'<span class="badge o">'+IS[i][2]+'</span>').join('')}</p>`}
+function det(r,c){const i=IS.findIndex(x=>x[0]===r&&(x[1]===c||x[1]==='*'));if(i<0){$('dm4').innerHTML='<span class="no">That looks fine 🙂 Keep searching!</span>';dd();return}fd[i]=1;setS(3,'d'+i,1);dd();$('dm4').innerHTML='<span class="ok">✅ Great catch: '+IS[i][2]+'!</span>'}
+function tool(k){if(used[k])return;used[k]=1;L=OPS[k][2](L);setS(3,'t'+k,1);$('tl'+k).disabled=true;lb()}
+function lb(){$('lab').innerHTML=tb(L)+(Object.keys(used).length===5?say('🦊','🎉 Sparkling clean! Now Bolt can learn from this table.'):'<p>Tools used: '+Object.keys(used).length+' of 5</p>')}
+
+const E=[{p:'Count the <b>missing values</b> in every column.',h:'Use <code>df.isna().sum()</code>',re:/^df\.(isna|isnull)\(\)\.sum\(\)$/,o:()=>'Name&nbsp;&nbsp;0<br>Age&nbsp;&nbsp;&nbsp;1<br>Fruit&nbsp;0<br>Money&nbsp;0'},
+{p:'Remove the <b>repeated rows</b>.',h:'The word is <code>drop_duplicates</code> with ( ) after it.',re:/^df\.drop_duplicates\(\)$/,o:()=>st(D.filter(r=>!r.d))},
+{p:'Fill the missing Age with <b>12</b>.',h:"Pick the Age column, then <code>.fillna(12)</code>",re:/^(df\['Age'\]=)?df\['Age'\]\.fillna\(12(\.0)?\)$/,o:()=>'0&nbsp;&nbsp;12.0<br>1&nbsp;&nbsp;13.0<br>2&nbsp;&nbsp;<b>12.0</b> ← filled!<br>3&nbsp;&nbsp;13.0<br>4&nbsp;&nbsp;12.0<br>5&nbsp;&nbsp;130.0<br>6&nbsp;&nbsp;12.0'},
+{p:'Make every Fruit name start with a capital letter.',h:"Use <code>.str.title()</code> on the Fruit column.",re:/^(df\['Fruit'\]=)?df\['Fruit'\]\.str\.title\(\)$/,o:()=>'0&nbsp;&nbsp;Mango<br>1&nbsp;&nbsp;<b>Mango</b><br>2&nbsp;&nbsp;Apple<br>3&nbsp;&nbsp;<b>Mango</b><br>4&nbsp;&nbsp;Aple<br>5&nbsp;&nbsp;Apple<br>6&nbsp;&nbsp;Banana'},
+{p:'Fix the typo: change <b>Aple</b> to <b>Apple</b>.',h:"Pick the Fruit column, then use <code>.replace(old, new)</code>. Put the words in quotes!",re:/^(df\['Fruit'\]=)?df\['Fruit'\]\.replace\('Aple','Apple'\)$/,o:()=>'0&nbsp;&nbsp;Mango<br>1&nbsp;&nbsp;mango<br>2&nbsp;&nbsp;Apple<br>3&nbsp;&nbsp;mango<br>4&nbsp;&nbsp;<b>Apple</b> ← fixed!<br>5&nbsp;&nbsp;Apple<br>6&nbsp;&nbsp;Banana'},
+{p:'⭐ Keep only rows where Age is less than 20.',h:"Put a test inside square brackets: <code>df[ df['Age'] ... 20 ]</code>",re:/^df\[df\['Age'\](<20|<=19)\]$/,o:()=>st(D.filter(r=>r.a!==null&&r.a<20))}];
+function s5(){page(4,`<div class="card">${say('🦊','Let us clean with real code! The messy table is stored in <code>df</code>.')}
+<pre class="code">import pandas as pd
+df = pd.DataFrame({
+  'Name':  ['Anu','Ben','Chitra','Ben','Dev','Esha','Gita'],
+  'Age':   [12, 13, None, 13, 12, 130, 12],
+  'Fruit': ['Mango','mango','Apple','mango','Aple','Apple','Banana'],
+  'Money': [50, 60, 40, 60, 55, 45, 50]})</pre>
+${E.map((e,i)=>`<div class="row"><b>${i+1}.</b> ${e.p}<br><input type="text" class="cd" id="e${i}" placeholder="type your code here" autocomplete="off" spellcheck="false"><br><button class="b k" onclick="run(${i})">▶ Run</button><button class="b w" onclick="hint(${i})">💡 Hint</button><div id="eo${i}"></div></div>`).join('')}
+${tip(['Capital letters matter: <code>Age</code> is not <code>age</code>.','Square brackets <code>[ ]</code> pick columns. Round brackets <code>( )</code> run actions.','Stuck? Tap 💡 Hint. Look back at Stage 2 for the magic words!'])}</div>`)}
+const norm=v=>{v=v.replace(/\s+/g,'').replace(/"/g,"'");if(v.startsWith('print(')&&v.endsWith(')'))v=v.slice(6,-1);return v};
+function run(i){const ok=E[i].re.test(norm($('e'+i).value));$('eo'+i).innerHTML=ok?`<div class="bub ai"><span class="ok">✅ Great code!</span> Output:<br>${E[i].o()}</div>`:'<div class="bub u"><span class="no">❌ Not quite.</span> Check spelling and brackets, or tap Hint.</div>';if(ok)setS(4,'e'+i,1)}
+function hint(i){$('eo'+i).innerHTML=`<div class="bub u">💡 ${E[i].h}</div>`}
+
+const CD=[{n:'Zara',p:'Dog',a:11},{n:'Yash',p:'cat',a:12},{n:'Xena',p:'Cat',a:12},{n:'Yash',p:'cat',a:12},{n:'Wren',p:'Rabbit',a:null},{n:'Vik',p:'Doog',a:13}];
+const CQ=[['q1','1. How many rows are in the table?','n',6],['q2','2. How many repeated (duplicate) rows are there?','n',1],['q3','3. How many missing values (NaN) are there?','n',1],['q4','4. Which pet is spelled wrong (a typo)?','c',['Dog','cat','Doog','Rabbit'],'Doog'],['q5','5. After removing the duplicate, how many rows are left?','n',5],['q6','⭐ Super Challenge: Type the code that removes duplicate rows from <code>df</code>.','t',/^(df=)?df\.drop_duplicates\(\)$/]];
+function s6(){page(5,`<div class="card">${say('🦊','Pet Club survey needs cleaning! Study the table, then answer the questions.')}
+<div class="wrap"><table class="t"><tr><th>Name</th><th>Pet</th><th>Age</th></tr>${CD.map(r=>`<tr><td>${r.n}</td><td>${r.p}</td><td class="${r.a===null?'nan':''}">${r.a===null?'NaN':r.a}</td></tr>`).join('')}</table></div>
+${CQ.map(q=>`<div class="row"><b>${q[1]}</b><br>${q[2]==='n'?`<input type="number" id="${q[0]}" placeholder="?">`:q[2]==='t'?`<input type="text" class="cd" id="${q[0]}" placeholder="type your code" autocomplete="off" spellcheck="false">`:q[3].map(o=>`<button class="nm" data-q="${q[0]}" onclick="tg(this)">${o}</button>`).join('')} <span id="${q[0]}r"></span></div>`).join('')}
+<button class="b" onclick="c6()">Check my answers ✅</button>
+${tip(['Count the rows one by one. Do not count the title row!','Duplicate = exactly the same row twice. Look at Yash.','NaN means empty. Where is a box empty?','A typo is a spelling slip. Which pet word looks odd?','If you remove 1 row from 6 rows, how many are left?','Super Challenge: the code from Stage 5, exercise 2!'])}</div>`)}
+function tg(el){document.querySelectorAll(`[data-q="${el.dataset.q}"]`).forEach(x=>x.classList.remove('sel'));el.classList.add('sel')}
+function c6(){CQ.forEach(q=>{let ok;const e=$(q[0]);if(q[2]==='n')ok=e.value!==''&&+e.value===q[3];else if(q[2]==='t')ok=q[3].test(norm(e.value));else{const s=document.querySelector(`[data-q="${q[0]}"].sel`);ok=!!s&&s.textContent===q[4]}
+ $(q[0]+'r').innerHTML=ok?'<span class="ok">✅ Correct!</span>':'<span class="no">❌ Try again</span>';if(ok)setS(5,q[0],1)})}
+
+function s7(){page(6,`<div class="card"><span class="badge o">🇪🇺 Data Privacy (GDPR)</span><span class="badge">Human Oversight</span>${say('🦊','Let us talk! Tap each question, discuss with a friend, then open the talking points.')}
+${[['Why does an AI need clean data?','AI learns patterns from data. If the data is wrong, the AI learns wrong patterns. Garbage in, garbage out!'],['Chitra has an empty age. Should we delete her row or fill the gap? Why?','Both can be okay. Deleting loses information. Filling with a sensible number keeps the row. Explain your choice!'],['Who should check that the data is really clean?','People! Humans check the data and the AI results. This is called human oversight.'],['Should real names and ages of kids go into an AI dataset?','Personal data must be protected. Ask permission and use made-up names when practising.']].map(d=>`<details class="q"><summary>💬 ${d[0]}</summary><p>${d[1]}</p></details>`).join('')}
+${tip(['Take turns speaking. Listen to your friends.','Use words like "missing", "duplicate", "typo" and "clean".'])}</div>`)}
+
+const QZ=[['What does NaN mean in a table?',['A missing (empty) value','A name','A very big number'],0],['Which code removes repeated rows?',['df.drop_duplicates()','df.head()','df.shape'],0],['What does "Garbage in, garbage out" mean?',['Messy data gives a messy AI','Throw rubbish in the bin','AI loves garbage'],0],['Which of these is a typo problem?',['Aple instead of Apple','An empty box','The same row twice'],0],['Which code counts missing values?',['df.isna().sum()','df.max()','df.drop_duplicates()'],0]];
+function s8(){page(7,`<div class="card"><h3>📝 Quick Quiz</h3>${QZ.map((q,i)=>`<div class="row"><b>${i+1}. ${esc(q[0])}</b>${q[1].map((o,j)=>`<button class="b opt" id="z${i}_${(j+i)%3}" onclick="qz(${i},${(j+i)%3})">${esc(q[1][(j+i)%3])}</button>`).join('')}</div>`).join('')}
+${tip(['Read all choices before you tap.','Think about the 4 kinds of dirty data and the cleaning recipe.'])}</div>
+<div class="card"><h3>🎒 Take-home Mission</h3>${say('🦊','Be a Data Cleaner at home!')}<ol><li>Make a messy table of <b>5 friends</b> (made-up names) with a favourite game and age. Put in <b>3 mistakes</b>: one empty box, one repeated row, one typo.</li><li>Swap with a family member. Can they find all 3 mistakes?</li><li>Ask an AI helper for pandas code to clean the table. Run it and <b>check</b> that it works!</li></ol></div>`)}
+function qz(i,j){const ok=QZ[i][1][j]===QZ[i][1][QZ[i][2]];$(`z${i}_${j}`).classList.add(ok?'right':'wrong');if(ok)setS(7,'z'+i,1)}
+
+function results(){const tot=ST.reduce((s,_,i)=>s+sc(i),0),mx=MX.reduce((a,b)=>a+b,0);
+ app.innerHTML=`<div class="ban"><h1>🏅 My Results</h1></div><div class="card"><p><b>Name:</b> ${esc(me.name)} &nbsp; <b>Class:</b> ${esc(me.cls)}</p><table class="t"><tr><th>Stage</th><th>Visited</th><th>Points</th></tr>${ST.map((s,i)=>`<tr><td>${s[0]} ${s[1]}</td><td>${V[i]?'✅':'⬜'}</td><td>${MX[i]?sc(i)+' / '+MX[i]:'-'}</td></tr>`).join('')}<tr><th colspan="2">Total points</th><th>${tot} / ${mx}</th></tr></table>
+${say('🦊',tot>=mx*.8?'Fantastic! You are a real Data Cleaner! 🎉':'Great effort! Go back to any stage to earn more points ⭐')}<button class="b o" onclick="dl()">📥 Download my result (PDF)</button></div><button class="b w" onclick="home()">⬅ Back to Menu</button>`}
+function dl(){const tot=ST.reduce((s,_,i)=>s+sc(i),0),mx=MX.reduce((a,b)=>a+b,0);
+ const L2=[['Young IT Germany',12],['How to Clean Data Before Teaching AI',20],['',8],['Name: '+me.name,16],['Class: '+me.cls,16],['Date: '+new Date().toLocaleDateString(),12],['',8],...ST.map((s,i)=>[s[1].replace('&','and')+':  '+(MX[i]?sc(i)+' / '+MX[i]:(V[i]?'completed':'not visited')),15]),['',8],['Total points: '+tot+' / '+mx,20],['',8],['Great work, Data Cleaner!',14]];
+ let y=790,c='BT\n';L2.forEach(l=>{c+=`/F1 ${l[1]} Tf 1 0 0 1 50 ${y} Tm (${l[0].replace(/[^\x20-\x7e]/g,'?').replace(/([\\()])/g,'\\$1')}) Tj\n`;y-=l[1]+14});c+='ET';
+ const O=['<</Type/Catalog/Pages 2 0 R>>','<</Type/Pages/Kids[3 0 R]/Count 1>>','<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>',`<</Length ${c.length}>>\nstream\n${c}\nendstream`,'<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>'];
+ let p='%PDF-1.4\n',off=[];O.forEach((o,i)=>{off.push(p.length);p+=`${i+1} 0 obj\n${o}\nendobj\n`});const x=p.length;
+ p+=`xref\n0 ${O.length+1}\n0000000000 65535 f \n`+off.map(o=>String(o).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<</Size ${O.length+1}/Root 1 0 R>>\nstartxref\n${x}\n%%EOF`;
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([p],{type:'application/pdf'}));a.download='clean-data-result-'+me.name.replace(/\W+/g,'_')+'.pdf';document.body.appendChild(a);a.click();a.remove()}
+splash();
+</script></body></html>
